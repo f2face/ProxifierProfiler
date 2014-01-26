@@ -118,7 +118,7 @@ namespace f2faceProxifierProfiler
             this.tambahRule(true, "Localhost", "localhost; 127.0.0.1; %ComputerName%;", null, null, ActionType.Direct);
         }
 
-        public void tambahProxy(string label, string address, int port, ProxyType proxyType)
+        public int tambahProxy(string label, string address, int port, ProxyType proxyType)
         {
             this.proxyCount += 1;
             this.proxyList.Add(new string[] {
@@ -128,6 +128,7 @@ namespace f2faceProxifierProfiler
                 address,                    // [3] Proxy Address
                 port.ToString()             // [4] Proxy Port
             });
+            return this.proxyCount;
         }
 
         public void tambahRule(bool enabled, string ruleName, string targetAddress, string Applications, string Ports, ActionType actionType, int proxyID = 0)
@@ -143,7 +144,7 @@ namespace f2faceProxifierProfiler
             });
         }
 
-        public void tambahProxyChain(ChainType chainType, string chainName, List<KeyValuePair<int, bool>> proxyIDList, int RedundancyTimeout = 30, bool RedundancyTryDirect = false)
+        public int tambahProxyChain(ChainType chainType, string chainName, List<KeyValuePair<int, bool>> proxyIDList, int RedundancyTimeout = 30, bool RedundancyTryDirect = false)
         {
             this.proxyCount += 1;
             List<KeyValuePair<int, bool>> proxyPairs = new List<KeyValuePair<int,bool>>();
@@ -159,6 +160,7 @@ namespace f2faceProxifierProfiler
                 RedundancyTimeout,          // [4] RedundancyTimeout
                 RedundancyTryDirect         // [5] RedundancyTryDirect
             });
+            return this.proxyCount;
         }
 
         private string profileOptions()
