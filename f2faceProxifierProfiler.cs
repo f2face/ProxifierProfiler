@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -28,7 +28,7 @@ namespace f2faceProxifierProfiler
         // Enum
         public enum EncryptionMode { disabled, basic };
         public enum ProxyType { HTTP, HTTPS, SOCKS4, SOCKS5 };
-        public enum ActionType { Direct, Block, Proxy };
+        public enum ActionType { Direct, Block, Proxy, Chain };
         public enum ChainType { simple, redundancy, load_balancing };
 
         public int proxyCount
@@ -101,7 +101,7 @@ namespace f2faceProxifierProfiler
         {
             proxyCount = 0;
             AutoModeDetection = false;
-            ViaProxy = false;
+            ViaProxy = true;
             TryLocalDnsFirst = false;
             ExclusionList = "%ComputerName%; localhost; *.local";
             Encryption = EncryptionMode.disabled;
@@ -134,13 +134,13 @@ namespace f2faceProxifierProfiler
         public void tambahRule(bool enabled, string ruleName, string targetAddress, string Applications, string Ports, ActionType actionType, int proxyID = 0)
         {
             this.ruleList.Add(new string[]{
-                enabled.ToString(),     // [0] Enabled?
-                ruleName,               // [1] Name
-                targetAddress,          // [2] Targets
-                Applications,           // [3] Applications
-                Ports,                  // [4] Ports
-                actionType.ToString(),  // [5] Action type
-                proxyID.ToString()      // [6] ID proxy
+                enabled.ToString(),         // [0] Enabled?
+                ruleName,        // [1] Name
+                targetAddress,   // [2] Targets
+                Applications,    // [3] Applications
+                Ports,           // [4] Ports
+                actionType.ToString(),      // [5] Action type
+                proxyID.ToString()          // [6] ID proxy
             });
         }
 
@@ -152,7 +152,7 @@ namespace f2faceProxifierProfiler
             {
                 proxyPairs.Add(new KeyValuePair<int, bool>(proxyPair.Key, proxyPair.Value));
             }
-            chainList.Add(new object[]{
+            this.chainList.Add(new object[]{
                 this.proxyCount.ToString(), // [0] ID Chain
                 chainType.ToString(),       // [1] Chain type
                 chainName,                  // [2] Chain name
@@ -226,7 +226,7 @@ namespace f2faceProxifierProfiler
             string str = "  <RuleList>";
             foreach (string[] rulesOpt in this.ruleList)
             {
-                str += "\r\n    <Rule enabled=\"" + rulesOpt[0] + "\">" +
+                str += "\r\n    <Rule enabled=\"" + rulesOpt[0].ToLower() + "\">" +
                        "\r\n      <Name>" + rulesOpt[1] + "</Name>";
                 if (rulesOpt[2] != null)
                     str += "\r\n      <Targets>" + rulesOpt[2] + "</Targets>";
@@ -234,13 +234,13 @@ namespace f2faceProxifierProfiler
                     str += "\r\n      <Applications>" + rulesOpt[3] + "</Applications>";
                 if (rulesOpt[4] != null)
                     str += "\r\n      <Ports>" + rulesOpt[4] + "</Ports>";
-                if (rulesOpt[5] == "Proxy" && rulesOpt[5] != "0")
-                    str += "\r\n      <Action type=\"Proxy\">" + rulesOpt[6] + "</Action>";
+                if ((rulesOpt[5] == "Proxy" || rulesOpt[5] == "Chain") && rulesOpt[6] != "0")
+                    str += "\r\n      <Action type=\"" + rulesOpt[5] + "\">" + rulesOpt[6] + "</Action>";
                 else
                     str += "\r\n      <Action type=\"" + rulesOpt[5] + "\" />";
                 str += "\r\n    </Rule>";
             }
-            str += "\r\n  <RuleList>";
+            str += "\r\n  </RuleList>";
             return str;
         }
 
@@ -278,7 +278,7 @@ namespace f2faceProxifierProfiler
             {
                 tambahRule(true, "Default", null, null, null, defaultRuleActionType, defaultRuleProxyID);
                 this.output_data += "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>";
-                this.output_data += "\r\n<ProxifierProfile version=\"101\" platform=\"Windows\" product_id=\"0\" product_minver=\"310\">";
+                this.output_data += "\r\n<ProxifierProfile version=\"101\" platform=\"Windows\" product_id=\"1\" product_minver=\"310\">";
                 this.output_data += "\r\n" + profileOptions();
                 this.output_data += "\r\n" + profileProxyList();
                 if (this.chainList.Count > 0)
