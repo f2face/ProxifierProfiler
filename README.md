@@ -12,7 +12,7 @@ Class library .NET untuk membuat profile Proxifier secara on-the-fly (sesaat seb
 <h4>Properties :</h4>
 bool <b>AutoModeDetection</b> : Detect DNS settings automatically. (default: false)<br/>
 bool <b>ViaProxy</b> : Resolve hostnames through proxy. (default: true)<br/>
-bool <b>TryLocalDnsFirst</b> : try to resolve via local DNS service first (this option may cause significant delay if local DNS is bool unavailable!). (default: false)<br/>
+bool <b>TryLocalDnsFirst</b> : try to resolve via local DNS service first (this option may cause significant delay if local DNS is unavailable!). (default: false)<br/>
 string <b>ExclusionList</b> : Hostnames which are not resolved through proxy. (default: %ComputerName%; localhost; *.local)<br/>
 EncryptionMode <b>Encryption</b> : Additional security modes (not necessary, though). (default: disabled)<br/>
 bool <b>HttpProxiesSupport</b> : Add HTTP proxy servers support. (default: true)<br/>
@@ -28,4 +28,4 @@ int <b>tambahProxyChain(ChainType chainType, string chainName, List&lt;KeyValueP
 void <b>setDefaultRule(ActionType action_type, int proxyID = 0)</b> : Set proxy for default proxification rule. (default ActionType: Direct)<br/><br/>
 int <b>getProxyID(string proxyAddress, int proxyPort)</b> : Get and return proxy id based on specified proxy address and proxy port.<br/><br/>
 int <b>getProxyID(string proxyLabel)</b> : Get and return proxy id based on specified proxy label.<br/><br/>
-string <b>createProfile()</b> : Create Proxifier profile string. This method should be called in the end, after proxies, chain, and rules have been set.
+string <b>createProfile()</b> : Create Proxifier profile string. This method should be called in the end, after proxies, chains, and rules have been set.
