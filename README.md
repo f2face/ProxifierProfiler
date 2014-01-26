@@ -24,7 +24,7 @@ bool <b>ProcessOtherUsers</b> : Handle connection of windows services and other 
 <h4>Methods :</h4>
 int <b>tambahProxy(string label, string address, int port, ProxyType proxyType)</b> : Add a proxy to Proxifier proxy list and return the proxy id.<br/><br/>
 void <b>tambahRule(bool enabled, string ruleName, string targetAddress, string Applications, string Ports, ActionType actionType, int proxyID = 0)</b> : Add a proxification rule.<br/><br/>
-int <b>tambahProxyChain(ChainType chainType, string chainName, List<KeyValuePair<int, bool>> proxyIDList, int RedundancyTimeout = 30, bool RedundancyTryDirect = false)</b> : Add a proxy chain to Proxifier proxy chain list and return the chain id.<br/><br/>
+int <b>tambahProxyChain(ChainType chainType, string chainName, List&lt;KeyValuePair&lt;int, bool&gt;&gt; proxyIDList, int RedundancyTimeout = 30, bool RedundancyTryDirect = false)</b> : Add a proxy chain to Proxifier proxy chain list and return the chain id.<br/><br/>
 void <b>setDefaultRule(ActionType action_type, int proxyID = 0)</b> : Set proxy for default proxification rule. (default ActionType: Direct)<br/><br/>
 int <b>getProxyID(string proxyAddress, int proxyPort)</b> : Get and return proxy id based on specified proxy address and proxy port.<br/><br/>
 int <b>getProxyID(string proxyLabel)</b> : Get and return proxy id based on specified proxy label.<br/><br/>
